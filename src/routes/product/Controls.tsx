@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useCart } from '../../hooks'
 import Input from './Input'
@@ -9,6 +9,10 @@ export default function Controls ({ product }: ControlsProps) {
 	const { cart, update } = useCart()
 	const current = cart.get(product) ?? 0
 	const [ amount, setAmount ] = useState(current || 1)
+
+	useEffect(() => {
+		setAmount(current)
+	}, [current])
 
 	const handleClick = () => {
 		update(product, amount - current)
