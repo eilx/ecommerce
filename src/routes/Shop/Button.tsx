@@ -2,11 +2,13 @@ import { MouseEventHandler, useState } from 'react'
 
 import { useCart } from '../../hooks'
 import css from '../css/Shop.module.css'
+import { inCart } from '../../utils/styles.module.css'
 
 interface ButtonProps { product: IProduct }
 export default function Button ({ product }: ButtonProps) {
 	const [ hovered, setHovered ] = useState(false)
-	const update = useCart(state => state.update)
+	const { cart, update } = useCart()
+	const amount = cart.get(product)
 
 	const onClick: MouseEventHandler = event => {
 		// Seems 0 for mouse, 1 for touchscreen?
@@ -17,14 +19,17 @@ export default function Button ({ product }: ButtonProps) {
 
 	return (
 		<button
-			className={css.price}
+			className={`${css.price} ${amount ? inCart : undefined}`}
+			disabled={amount == 100}
 			onClick={onClick}
 			onMouseEnter={() => setHovered(true)}
 			onMouseLeave={() => setHovered(false)}
 		>
-			{ hovered
-				? 'Add to cart'
-				: `$${product.price.toFixed(2)}`
+			{ !hovered
+				? `$${product.price.toFixed(2)}`
+				: !amount
+					? 'Add to cart'
+					: `Cart: ${amount}`
 			}
 		</button>
 	)

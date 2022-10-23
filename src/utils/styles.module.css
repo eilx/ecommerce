@@ -1,0 +1,4 @@
+.inCart {
+	--primary: var(--secondary);
+	--primary-hover: var(--secondary-hover);
+}
