@@ -1,0 +1,62 @@
+.container {
+	padding-top: 2em;
+	gap: 3em;
+	place-items: center;
+}
+
+.image {
+	& img {
+		padding: 1em;
+		background: white;
+		border-radius: 2px;
+	}
+}
+
+.content {
+	padding-left: 10%;
+}
+
+.title {
+	text-align: center;
+}
+
+.reviews {
+	float: right;
+	text-align: right;
+	color: var(--primary-hover);
+
+	& > p {
+		margin: 0;
+	}
+
+	& > small {
+		font-size: 0.75em;
+	}
+}
+
+.price {
+	font-size: 2em;
+	color: var(--primary-hover);
+}
+
+.input {
+	display: flex;
+
+	& :nth-child(1) {
+		border-radius: 5px 0 0 5px;
+	}
+
+	& :nth-child(2) {
+		border-radius: 0;
+		text-align: center;
+	}
+
+	& :nth-child(3) {
+		border-radius: 0 5px 5px 0;
+	}
+}
+
+.isInCart {
+	--primary: var(--secondary);
+	--primary-hover: var(--secondary-hover);
+}
