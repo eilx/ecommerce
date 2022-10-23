@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 
 import { ImageLoader } from '../components'
 import { useProducts } from '../hooks'
-import Controls from './Product/Controls'
+import Controls from './product/Controls'
 import css from './css/Product.module.css'
 
 export default function Product () {

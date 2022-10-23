@@ -2,7 +2,7 @@ import { MouseEventHandler, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useProducts } from '../hooks'
-import Button from './Shop/Button'
+import Button from './shop/Button'
 import css from './css/Shop.module.css'
 
 type ListingProps = { product: IProduct, onClick: MouseEventHandler }
