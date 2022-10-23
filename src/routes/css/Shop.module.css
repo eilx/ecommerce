@@ -1,0 +1,95 @@
+.grid {
+	display: grid;
+	gap: 0 3em;
+	grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+}
+
+.listing {
+	list-style: none;
+	text-align: center;
+
+	& article {
+		padding-bottom: 0;
+		border-radius: 10px;
+	}
+
+	& > a:hover {
+		text-decoration: none;
+
+		& header {
+			filter: brightness(90%);
+		}
+
+		& h2 {
+			text-decoration-line: underline;
+		}
+	}
+}
+
+.image {
+	margin-bottom: 0;
+	background-color: white;
+	transition: filter 200ms ease-in-out;
+
+	& > img {
+		padding: 8%;
+		width: 100%;
+		aspect-ratio: 1;
+		object-fit: contain;
+	}
+}
+
+.information {
+	padding: 1em 0;
+
+	& h2 {
+		margin: 1em 0;
+		font-size: 1.1em;
+	}
+}
+
+.bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	& > * { margin: 0 }
+}
+
+.category {
+	width: max-content;
+	padding: 0.2em 0.8em;
+	font-size: 0.6em;
+	border: solid 1px var(--primary);
+	border-radius: 2em;
+
+	&:hover {
+		color: var(--switch-color);
+		background-color: var(--primary-hover);
+	}
+
+	&:active {
+		background-color: var(--primary);
+		transition: unset;
+	}
+}
+
+.description {
+	margin: 1em 0 2em;
+	font-size: 0.8em;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.price {
+	padding: 0;
+	border-radius: 2px;
+
+	&:active {
+		background: var(--primary);
+		transition: unset;
+	}
+}
