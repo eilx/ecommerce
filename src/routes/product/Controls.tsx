@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useCart } from '../../hooks'
 import Input from './Input'
-import { inCart } from '../../utils/styles.module.css'
+import css from '../../utils/styles.module.css'
 
 interface ControlsProps { product: IProduct }
 export default function Controls ({ product }: ControlsProps) {
@@ -11,15 +11,14 @@ export default function Controls ({ product }: ControlsProps) {
 	const [ amount, setAmount ] = useState(current || 1)
 
 	useEffect(() => {
-		setAmount(current)
+		setAmount(current || 1)
 	}, [current])
 
 	const handleClick = () => {
 		update(product, amount - current)
-		if (amount == 0) setAmount(1)
 	}
 
-	return <div className={current ? inCart : undefined}>
+	return <div className={current ? css.inCart : undefined}>
 		<Input value={amount} min={+!current} onChange={setAmount} />
 
 		<button disabled={current==amount} onClick={handleClick}>
