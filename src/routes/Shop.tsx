@@ -1,63 +1,68 @@
-import { MouseEventHandler, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { MouseEventHandler, useState } from 'react'
 
-import { useProducts } from '../hooks'
-import Button from './shop/Button'
+import { useProducts, useProductCategories } from '../hooks'
+import { Select } from '../components'
+import Listing from './shop/Listing'
 import css from './css/Shop.module.css'
 
-type ListingProps = { product: IProduct, onClick: MouseEventHandler }
-const Listing = ({ product, onClick }: ListingProps) =>
-	<li className={css.listing}>
-		<Link to={`/shop/${product.id}`}>
-			<article>
-				<header className={css.image}>
-					<img src={product.image} />
-				</header>
+type SorterType = keyof typeof sorters
+type Sorter = (last: IProduct, next: IProduct) => number
+const sorters = {
+	'RATING': () => (
+		(last, next) => next.rating.rate - last.rating.rate
+	) as Sorter,
+	'PRICE (HIGH)': () => (
+		(last, next) => next.price - last.price
+	) as Sorter,
+	'PRICE (LOW)': () => (
+		(last, next) => last.price - next.price
+	) as Sorter,
+}
 
-				<section className={css.information}>
-					<div className={css.bar}>
-						<button className={`outline ${css.category}`} onClick={onClick}>
-							{ product.category.toUpperCase() }
-						</button>
-
-						<div>
-							<span>{ '★'.repeat(product.rating.rate) }</span>
-							<span>{ '☆'.repeat(5.99 - product.rating.rate) }</span>
-						</div>
-					</div>
-
-					<h2>{ product.title }</h2>
-					<p className={css.description}>
-						{ product.description }
-					</p>
-
-					<Button product={product} />
-				</section>
-			</article>
-		</Link>
-	</li>
-
+// TODO: Set category to params
 export default function Shop () {
 	const products = useProducts()
+	const categories = useProductCategories()
 	const [ category, setCategory ] = useState<string | undefined>()
+	const [ sorter, setSorter ] = useState<Sorter>(sorters['RATING'])
 
-	const handleClick: MouseEventHandler = event => {
+	const handleListingClick: MouseEventHandler = event => {
 		event.preventDefault()
 		const target = event.target as HTMLButtonElement
 		setCategory(target.textContent as string)
 	}
 
-	const listings = useMemo(() =>
-		products?.map(product =>
-			<Listing key={product.id} product={product} onClick={handleClick} />
-		)
-	, [products])
-
 	return <>
-		<p>{ category }</p>
+		<div className={`grid ${css.options}`}>
+			<label>
+				<h3>CATEGORY</h3>
+				<Select
+					initial='ALL'
+					items={categories}
+					onChange={e => setCategory(e.target.value.toLowerCase())}
+				/>
+			</label>
+			<label>
+				<h3>SORT BY</h3>
+				<Select
+					items={Object.keys(sorters)}
+					onChange={e => setSorter(sorters[e.target.value as SorterType])}
+				/>
+			</label>
+		</div>
 
 		<ul className={css.grid} aria-busy={!products}>
-			{ listings }
+			{ products
+				?.filter(product => !category || product.category == category)
+				?.sort(sorter)
+				?.map(product =>
+					<Listing
+						key={product.id}
+						product={product}
+						onClick={handleListingClick}
+					/>
+				)
+			}
 		</ul>
 	</>
 }

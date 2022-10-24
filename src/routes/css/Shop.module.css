@@ -1,7 +1,17 @@
 .grid {
+	padding: 0;
 	display: grid;
 	gap: 0 3em;
 	grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+}
+
+.options {
+	text-align: center;
+
+	& label > :first-child {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
 }
 
 .listing {
