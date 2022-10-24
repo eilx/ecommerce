@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import { useCart } from '../../hooks'
 import svg from '../../assets/shopping-cart.svg'
 import css from '../css/Root.Cart.module.css'
@@ -6,14 +8,15 @@ import css from '../css/Root.Cart.module.css'
 type CartItemProps = {
 	data: [IProduct, number]
 	onUpdate: (product: IProduct, amount: number) => void
+	onMove: () => void
 }
-const CartItem = ({ data: [product, amount], onUpdate }: CartItemProps) =>
+const CartItem = ({ data: [product, amount], onUpdate, onMove }: CartItemProps) =>
 	<li className={css.item}>
 		<img className={css.image} src={product.image} />
-		<div className={css.details}>
+		<Link to={`/shop/${product.id}`} className={css.details} onClick={onMove}>
 			<h6>{ product.title }</h6>
 			<p>${ product.price.toFixed(2) }</p>
-		</div>
+		</Link>
 		<div className={css.buttons}>
 			<button onClick={() => onUpdate(product, 1)}> + </button>
 			<div>{ amount }</div>
@@ -33,6 +36,9 @@ export default function Cart () {
 		sum + product.price * amount
 	, 0)
 
+	const closeDialog = () =>
+		setOpen(false)
+
 	useEffect(() => {
 		if (cart.length == 0) setOpen(false)
 	}, [cart.length])
@@ -49,7 +55,7 @@ export default function Cart () {
 		<dialog open={open}>
 			<article>
 				<header className={css.header}>
-					<a className='close' onClick={() => setOpen(false)} />
+					<a className='close' onClick={closeDialog} />
 					<h2>Cart Total: ${total.toFixed(2)}</h2>
 				</header>
 
@@ -59,6 +65,7 @@ export default function Cart () {
 							key={entry[0].id}
 							data={entry}
 							onUpdate={update}
+							onMove={closeDialog}
 						/>
 					)}
 				</ul>
