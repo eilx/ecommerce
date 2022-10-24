@@ -1,16 +1,19 @@
 import create from 'zustand'
 
-interface CartState {
-	/** A map of all products in the cart and their amount */
-	cart: Map<IProduct, number>,
-	/** Updates a product's amount by some change */
-	update: (product: IProduct, change: number) => void
+interface State {
+	cart: Map<IProduct, number>
 }
 
-export const useCart = create<CartState>((set, get) => ({
-	cart:
-		new Map()
-	,
+interface Actions {
+	/** Updates a product's amount by some change */
+	update: (product: IProduct, change: number) => void
+	/** Empties the cart */
+	reset: () => void
+}
+
+export const useCart = create<State & Actions>((set, get) => ({
+	cart: new Map(),
+
 	update:
 		(product: IProduct, change: number) => {
 			const cart = get().cart
@@ -21,7 +24,13 @@ export const useCart = create<CartState>((set, get) => ({
 			else
 				cart.delete(product)
 
+			console.log('Cart updated: ', cart)
 			set(() => ({ cart }))
+		}
+	,
+	reset:
+		() => {
+			set({ cart: new Map() })
 		}
 	,
 }))
