@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useCart } from '../../hooks'
@@ -25,10 +25,11 @@ const CartItem = ({ data: [product, amount], onUpdate, onMove }: CartItemProps) 
 	</li>
 
 export default function Cart () {
+	const ref = useRef<HTMLElement>(null)
 	const [ open, setOpen ] = useState(false)
-	const { cart, update, reset } = useCart(state =>
-		({ ...state, cart: [...state.cart] })
-	)
+	const { cart, update, reset } = useCart(state => (
+		{ ...state, cart: [...state.cart] }
+	))
 	const size = cart.reduce((sum, [, amount]) =>
 		sum + amount
 	, 0)
@@ -36,12 +37,28 @@ export default function Cart () {
 		sum + product.price * amount
 	, 0)
 
-	const closeDialog = () =>
-		setOpen(false)
-
 	useEffect(() => {
 		if (cart.length == 0) setOpen(false)
 	}, [cart.length])
+
+	useEffect(() => {
+		const handler = (event: MouseEvent) => {
+			const isOutside = ref.current?.contains(event.target as Node)
+			if (!isOutside) setOpen(false)
+		}
+
+		document.addEventListener('mousedown', handler)
+		return () => document.removeEventListener('mousedown', handler)
+	}, [ref])
+
+	useEffect(() => {
+		const handler = (event: KeyboardEvent) => {
+			if (event.key == 'Escape') setOpen(false)
+		}
+
+		document.addEventListener('keydown', handler)
+		return () => document.removeEventListener('keydown', handler)
+	}, [])
 
 	return !cart.length ? null : <>
 		<button
@@ -53,9 +70,9 @@ export default function Cart () {
 		</button>
 
 		<dialog open={open}>
-			<article>
+			<article ref={ref}>
 				<header className={css.header}>
-					<a className='close' onClick={closeDialog} />
+					<a className='close' onClick={() => setOpen(false)} />
 					<h2>Cart Total: ${total.toFixed(2)}</h2>
 				</header>
 
@@ -65,7 +82,7 @@ export default function Cart () {
 							key={entry[0].id}
 							data={entry}
 							onUpdate={update}
-							onMove={closeDialog}
+							onMove={() => setOpen(false)}
 						/>
 					)}
 				</ul>
