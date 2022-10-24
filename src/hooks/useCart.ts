@@ -24,7 +24,6 @@ export const useCart = create<State & Actions>((set, get) => ({
 			else
 				cart.delete(product)
 
-			console.log('Cart updated: ', cart)
 			set(() => ({ cart }))
 		}
 	,

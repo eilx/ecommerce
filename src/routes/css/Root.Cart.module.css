@@ -1,0 +1,112 @@
+.toggler {
+	position: fixed;
+	width: max-content;
+	bottom: 1em;
+	right: 1em;
+	padding: 1em;
+	margin: 0;
+	border-radius: 50%;
+
+	& img {
+		filter: invert(100%);
+	}
+}
+
+.count {
+	--size: 2em;
+
+	position: absolute;
+	top: -.5em;
+	left: -.5em;
+	padding: 0 .25em;
+	width: max-content;
+	min-width: var(--size);
+	line-height: var(--size);
+	color: var(--primary);
+	border: solid 1px var(--primary);
+	border-radius: 1em;
+	background: white;
+	font-size: 0.8em;
+}
+
+.header {
+	& > a {
+		cursor: pointer;
+	}
+
+	& > h2 {
+		margin: 0;
+	}
+}
+
+.list {
+	margin: 0;
+	padding: 0;
+	max-height: 50vh;
+	overflow: scroll;
+}
+
+.item {
+	padding: 0 1em;
+	margin: 1.5em 0;
+	list-style: none;
+	height: 5em;
+	display: flex;
+	gap: 1em;
+}
+
+.image {
+	height: 100%;
+	padding: .25em;
+	border-radius: 2px;
+	background-color: white;
+	aspect-ratio: 1;
+	object-fit: contain;
+}
+
+.details {
+	flex: 1;
+	& :first-child {
+		margin: 0;
+	}
+}
+
+.buttons {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	width: 2em;
+
+	& > * {
+		color: var(--primary);
+		margin: 0;
+		padding: 0;
+		background: transparent;
+	}
+
+	& > button {
+		&:hover {
+			color: var(--primary-inverse);
+			background-color: var(--primary-hover);
+		}
+
+		&:active {
+			background-color: var(--primary);
+			transition: unset;
+		}
+	}
+
+	& > :first-child {
+		border-radius: 5px 5px 0 0;
+	}
+
+	& > :nth-child(2) {
+		font-size: .8em;
+		padding-block: .15em;
+		border-inline: solid 1px var(--primary);
+	}
+
+	& > :last-child {
+		border-radius: 0 0 5px 5px;
+	}
+}
