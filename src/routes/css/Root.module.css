@@ -1,0 +1,26 @@
+.header {
+	z-index: 1;
+	position: sticky;
+	top: 0;
+	pointer-events: none;
+
+	& nav ul {
+		margin: 0;
+		width: 100%;
+		display: flex;
+		gap: .75em;
+		justify-content: center;
+
+		& a {
+			border: solid 1px var(--primary);
+			pointer-events: all;
+			backdrop-filter: brightness(95%) blur(5px);
+			transition: all 250ms;
+
+			&:hover {
+				color: var(--primary-inverse);
+				background-color: var(--primary);
+			}
+		}
+	}
+}
