@@ -7,6 +7,15 @@ interface InputProps {
 	min?: number
 	onChange: (change: number) => void
 }
+
+/**
+ * An input field with attached increment buttons
+ * @param value - The value to display inside the input
+ * @param onChange - The callback to handle updating the value
+ * @param min - The minimum allowed value for value
+ * @param max - The maximum allowed value for value
+ */
+
 export default function Input ({ value, onChange, min=0, max=100 }: InputProps) {
 	return (
 		<div className={input}>

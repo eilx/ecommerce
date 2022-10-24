@@ -5,6 +5,7 @@ import Input from './Input'
 import css from '../../utils/styles.module.css'
 
 interface ControlsProps { product: IProduct }
+/** State container for Product page controls */
 export default function Controls ({ product }: ControlsProps) {
 	const { cart, update } = useCart()
 	const current = cart.get(product) ?? 0

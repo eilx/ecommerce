@@ -5,6 +5,12 @@ import css from '../css/Shop.module.css'
 import { inCart } from '../../utils/styles.module.css'
 
 interface ButtonProps { product: IProduct }
+
+/**
+ * Button that displays alternate text on hover and
+ * adds the given product to the cart when clicked
+ */
+
 export default function Button ({ product }: ButtonProps) {
 	const [ hovered, setHovered ] = useState(false)
 	const { cart, update } = useCart()
