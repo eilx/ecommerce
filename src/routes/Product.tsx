@@ -20,7 +20,7 @@ export default function Product () {
 					SHOP
 				</Link></li>
 
-				<li><Link to={`/shop?category=${category}`}>
+				<li><Link to={`/shop?category=${product.category}`}>
 					{ category }
 				</Link></li>
 

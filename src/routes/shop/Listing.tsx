@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom'
 import Button from './Button'
 import css from '../css/Shop.module.css'
 
-interface ListingProps { product: IProduct, onClick: MouseEventHandler }
+interface ListingProps {
+	product: IProduct,
+	onCategory: MouseEventHandler<HTMLButtonElement>
+}
 
 /** Shop listing (separated for cleanliness) */
 
-export default function Listing ({ product, onClick }: ListingProps) {
+export default function Listing ({ product, onCategory }: ListingProps) {
 	return (
 		<li className={css.listing}>
 			<Link to={`/shop/${product.id}`}>
@@ -19,7 +22,10 @@ export default function Listing ({ product, onClick }: ListingProps) {
 
 					<section className={css.information}>
 						<div className={css.bar}>
-							<button className={`outline ${css.category}`} onClick={onClick}>
+							<button
+								className={`outline ${css.category}`}
+								onClick={onCategory}
+							>
 								{ product.category.toUpperCase() }
 							</button>
 

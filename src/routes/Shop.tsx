@@ -1,36 +1,57 @@
-import { MouseEventHandler, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import { useProducts, useProductCategories } from '../hooks'
 import { Select } from '../components'
 import Listing from './shop/Listing'
 import css from './css/Shop.module.css'
+import { MouseEventHandler, useEffect } from 'react'
 
-type SorterType = keyof typeof sorters
 type Sorter = (last: IProduct, next: IProduct) => number
-const sorters = {
-	'RATING': () => (
-		(last, next) => next.rating.rate - last.rating.rate
-	) as Sorter,
-	'PRICE (HIGH)': () => (
-		(last, next) => next.price - last.price
-	) as Sorter,
-	'PRICE (LOW)': () => (
-		(last, next) => last.price - next.price
-	) as Sorter,
+const sorters: Record<string, Sorter> = {
+	'rating': (last, next) =>
+		next.rating.rate - last.rating.rate
+	,
+	'price_high': (last, next) =>
+		next.price - last.price
+	,
+	'price_low': (last, next) =>
+		last.price - next.price
+	,
 }
 
-// TODO: Set category to params
-export default function Shop () {
-	const products = useProducts()
-	const categories = useProductCategories()
-	const [ category, setCategory ] = useState<string | undefined>()
-	const [ sorter, setSorter ] = useState<Sorter>(sorters['RATING'])
+/** The mapping between url display and Select display */
+const sortMap = {
+	rating: 'RATING',
+	price_high: 'PRICE (HIGH)',
+	price_low: 'PRICE (LOW)',
+}
 
-	const handleListingClick: MouseEventHandler = event => {
-		event.preventDefault()
+export default function Shop () {
+	const products = useProducts() ?? []
+	const categories = useProductCategories() ?? []
+	const [ search, setSearch ] = useSearchParams()
+
+	const _category = search.get('category') as string
+	const category = categories.includes(_category) ? _category : ''
+	const setCategory = (category: string) =>
+		setSearch({ sort, category: category.toLowerCase() })
+
+	const _sort = search.get('sort') as string
+	const sort = Object.hasOwn(sortMap, _sort) ? _sort : 'rating'
+	const setSort = (sort: string) =>
+		setSearch({ sort, category })
+
+	const handleCategoryClick: MouseEventHandler = event => {
 		const target = event.target as HTMLButtonElement
+		event.preventDefault()
 		setCategory(target.textContent as string)
+		scrollTo({ top: 0, behavior: 'smooth' })
 	}
+
+	// Reset invalid param values
+	useEffect(() => history
+		.replaceState(null, '', '?' + new URLSearchParams({ sort, category }))
+	, [])
 
 	return <>
 		<div className={`grid ${css.options}`}>
@@ -38,28 +59,29 @@ export default function Shop () {
 				<h3>CATEGORY</h3>
 				<Select
 					initial='ALL'
-					items={categories}
-					onChange={e => setCategory(e.target.value.toLowerCase())}
+					value={category.toUpperCase()}
+					items={categories?.map(cat => cat.toUpperCase())}
+					onChange={setCategory}
 				/>
 			</label>
 			<label>
 				<h3>SORT BY</h3>
 				<Select
-					items={Object.keys(sorters)}
-					onChange={e => setSorter(sorters[e.target.value as SorterType])}
+					items={sortMap}
+					onChange={setSort}
 				/>
 			</label>
 		</div>
 
 		<ul className={css.grid} aria-busy={!products}>
 			{ products
-				?.filter(product => !category || product.category == category)
-				?.sort(sorter)
-				?.map(product =>
+				.filter(product => !category || product.category == category)
+				.sort(sorters[sort])
+				.map(product =>
 					<Listing
 						key={product.id}
 						product={product}
-						onClick={handleListingClick}
+						onCategory={handleCategoryClick}
 					/>
 				)
 			}
