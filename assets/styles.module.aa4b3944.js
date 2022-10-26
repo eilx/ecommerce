@@ -1,0 +1,1 @@
+import{c as s}from"./index.5b5f1108.js";const o="https://fakestoreapi.com/products",a=async r=>{const t=await fetch(r);if(!t.ok||t.status==404)throw new Error;return t.json()},n=()=>{const{data:r,error:t}=s(o,a);if(t)throw t;return r},i=()=>{const{data:r,error:t}=s(`${o}/categories`,a);if(t)throw t;return r},c="_inCart_aqmx3_1",u={inCart:c};export{i as a,u as c,c as i,n as u};
