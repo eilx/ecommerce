@@ -1,14 +1,21 @@
-import { Link, Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 
 import Cart from './root/Cart'
 import css from './css/Root.module.css'
 
 export default function Root () {
+	const classes = ({ isActive } : { isActive: boolean }) =>
+		`${css.link} ${isActive && css.active}`
+
 	return <>
 		<header className={css.header}>
 			<nav><ul>
-				<li><Link to='/'>Home</Link></li>
-				<li><Link to='/shop'>Shop</Link></li>
+				<li><NavLink to='/' className={classes} end>
+					Home
+				</NavLink></li>
+				<li><NavLink to='/shop' className={classes} end>
+					Shop
+				</NavLink></li>
 			</ul></nav>
 		</header>
 
