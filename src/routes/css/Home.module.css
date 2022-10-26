@@ -1,0 +1,21 @@
+.techs {
+	--width: 5em;
+	padding: 0;
+	margin-bottom: 4em;
+	display: grid;
+	gap: 5em;
+	justify-content: center;
+	grid-template-columns: repeat(auto-fit, var(--width));
+	text-align: center;
+
+	& > li {
+		display: block;
+		width: var(--width);
+		margin: 0 auto;
+		list-style: none;
+
+		& img {
+			height: 100%;
+		}
+	}
+}
