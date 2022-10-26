@@ -12,6 +12,11 @@
 		margin-top: 1em;
 		margin-bottom: 1em;
 	}
+
+	& select {
+		width: min-content;
+		text-align: center;
+	}
 }
 
 .listing {
