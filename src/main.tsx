@@ -23,7 +23,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 		<Route path='/shop'     element={<Suspended route={<Shop    />} />} />
 		<Route path='/shop/:id' element={<Suspended route={<Product />} />} />
 	</Route>
-))
+), { basename: '/ecommerce' })
 
 createRoot(document.getElementById('root') as HTMLElement).render(
 	<StrictMode>
